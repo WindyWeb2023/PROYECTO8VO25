@@ -1,0 +1,43 @@
+﻿@page "/user"
+@using Proyecto.Shared.Entidad;
+@using static System.Net.WebRequestMethods
+@inject HttpClient Http
+
+<h2>Usuarios</h2> 
+<div class="mb-3">
+    <a class="btn btn-primary" href="">Nuevo Usuario</a>
+</div>
+<body>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Acciones</th>
+                <th>Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var u in usuarios)
+            {
+                <tr>
+                    <td><a class="btn btn-warning">Editar</a>
+                        <button class="btn btn-danger">Borrar</button>
+                    </td>
+                    <td>
+                        @u.Nombre
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+
+@code {
+    public List<Usuario> usuarios { get; set; } = new();
+
+    protected async override Task OnInitializedAsync()
+    {
+        usuarios = await Http.GetFromJsonAsync<List<Usuario>>("/api/usuarios");
+    }
+
+}
+ 

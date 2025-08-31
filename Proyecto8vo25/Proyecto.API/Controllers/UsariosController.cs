@@ -23,6 +23,7 @@ namespace Proyecto.API.Controllers
             return Ok(await 
                 _dataContext.Usuarios.ToListAsync());
         }
+
         [HttpPost]
         public async Task<ActionResult> PostAsync (Usuario usuario)
         {
@@ -31,6 +32,7 @@ namespace Proyecto.API.Controllers
             return Ok(usuario);
 
         }
+        
 
 
     }

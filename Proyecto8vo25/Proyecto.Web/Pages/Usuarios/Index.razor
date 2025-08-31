@@ -13,6 +13,9 @@
             <tr>
                 <th>Acciones</th>
                 <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Carnet</th>
+                <th>Correo</th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +26,16 @@
                         <button class="btn btn-danger">Borrar</button>
                     </td>
                     <td>
-                        @u.Nombre
+                         @u.Nombre
+                    </td>
+                    <td>
+                        @u.Apellidos
+                    </td>
+                    <td>
+                        @u.Carnet
+                    </td>
+                    <td>
+                        @u.Correo
                     </td>
                 </tr>
             }

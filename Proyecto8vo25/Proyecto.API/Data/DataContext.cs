@@ -11,6 +11,7 @@ namespace Proyecto.API.Data
         }
 
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Producto> Productos { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

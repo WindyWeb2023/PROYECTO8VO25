@@ -1,0 +1,55 @@
+﻿@page "/productos"
+@using Proyecto.Shared.Entidad;
+@using static System.Net.WebRequestMethods
+@inject HttpClient Http
+
+<h2>Productos</h2>
+<div class="mb-3">
+    <a class="btn btn-primary" href="">Nuevo Producto</a>
+</div>
+<body>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Acciones</th>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Fecha de Expiracion</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var u in productos)
+            {
+                <tr>
+                    <td>
+                        <a class="btn btn-warning">Editar</a>
+                        <button class="btn btn-danger">Borrar</button>
+                    </td>
+                    <td>
+                        @u.Nombre
+                    </td>
+                    <td>
+                        @u.Cantidad
+                    </td>
+                    <td>
+                        @u.PrecioUnitario
+                    </td>
+                    <td>
+                        @u.FechaExpiracion
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+
+@code {
+    public List<Producto> productos { get; set; } = new();
+
+    protected async override Task OnInitializedAsync()
+    {
+        productos = await Http.GetFromJsonAsync<List<Producto>>("/api/productos");
+    }
+
+}

@@ -1,0 +1,22 @@
+﻿@page "/usuario/crear"
+@using Proyecto.Shared.Entidad
+@using static System.Net.WebRequestMethods
+@inject NavigationManager navegar
+@inject HttpClient Http
+
+<h3>Crear Usuario</h3>
+<UsuarioForms Usuario="usuario" OnValidSubmit="Crear" ReturnAction="Return" />
+@code {
+    private Usuario usuario = new();
+
+    private async Task Crear()
+    {
+        var resultado = await Http.PostAsJsonAsync("/api/usuarios/", usuario);
+        navegar.NavigateTo("/user");
+    }
+
+    private void Return()
+    {
+        navegar.NavigateTo("/user");
+    }
+}

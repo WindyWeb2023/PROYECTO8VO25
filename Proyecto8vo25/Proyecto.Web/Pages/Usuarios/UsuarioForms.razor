@@ -1,0 +1,43 @@
+﻿@using Proyecto.Shared.Entidad
+<EditForm Model="Usuario" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator/>
+    <div>
+        <label>Nombre:</label>
+        <div>
+            <InputText @bind-Value="@Usuario.Nombre"/>
+            <ValidationMessage For="@(()=>Usuario.Nombre)"/>
+        </div>
+        <label>Apellidos:</label>
+         <div>
+            <InputText @bind-Value="@Usuario.Apellidos"/>
+            <ValidationMessage For="@(()=>Usuario.Apellidos)"/>
+        </div>
+        <label>Carnet:</label>
+        <div>
+            <InputText @bind-Value="@Usuario.Carnet" />
+            <ValidationMessage For="@(() => Usuario.Carnet)" />
+        </div>
+        <label>Correo:</label>
+        <div>
+            <InputText @bind-Value="@Usuario.Correo" />
+            <ValidationMessage For="@(() => Usuario.Correo)" />
+        </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
+</EditForm>
+
+@code {
+    [EditorRequired]
+    [Parameter]
+    public Usuario Usuario { get; set; } = null;
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+}

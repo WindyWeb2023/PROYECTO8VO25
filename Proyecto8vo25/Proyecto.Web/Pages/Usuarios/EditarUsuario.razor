@@ -1,0 +1,30 @@
+﻿@page "/user/editar/{id:int}"
+@using Proyecto.Shared.Entidad
+@using static System.Net.WebRequestMethods
+@inject NavigationManager navegar
+@inject HttpClient Http
+
+<h3>Editar Usuario</h3>
+<UsuarioForms Usuario="usuario" OnValidSubmit="Editar" ReturnAction="Retornar" />
+
+
+@code {
+    private Usuario? usuario;
+
+    [Parameter]
+    public int Id { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        usuario = await Http.GetFromJsonAsync<Usuario>($"/api/usuarios/{Id}");
+    }
+
+    private async Task Editar()
+    {
+        var resultado = await Http.PutAsJsonAsync("/api/usuarios/", usuario);
+        navegar.NavigateTo("/user");
+    }
+    private void Retornar()
+    {
+        navegar.NavigateTo("/user");
+    }
+}

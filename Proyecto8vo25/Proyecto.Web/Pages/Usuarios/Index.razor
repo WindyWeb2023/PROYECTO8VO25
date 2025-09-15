@@ -1,6 +1,7 @@
 ﻿@page "/user"
 @using Proyecto.Shared.Entidad;
 @using static System.Net.WebRequestMethods
+@inject NavigationManager navegar
 @inject HttpClient Http
 
 <h2>Usuarios</h2> 
@@ -22,8 +23,9 @@
             @foreach (var u in usuarios)
             {
                 <tr>
-                    <td><a class="btn btn-warning">Editar</a>
-                        <button class="btn btn-danger">Borrar</button>
+                    <td>
+                        <a class="btn btn-warning" href="/user/editar/@u.Id">Editar</a>
+                        <button class="btn btn-danger" onclick=@(() => Delete(u))>Borrar</button>
                     </td>
                     <td>
                          @u.Nombre
@@ -45,11 +47,22 @@
 
 @code {
     public List<Usuario> usuarios { get; set; } = new();
+    private Usuario? usuario;
+
 
     protected async override Task OnInitializedAsync()
     {
         usuarios = await Http.GetFromJsonAsync<List<Usuario>>("/api/usuarios");
     }
+
+    private async Task Delete(Usuario usuario)
+    {
+        var resultado = await Http.DeleteAsync($"/api/usuarios/{usuario.Id}");
+        StateHasChanged();
+        navegar.NavigateTo("/user");
+    }
+
+   
 
 }
  

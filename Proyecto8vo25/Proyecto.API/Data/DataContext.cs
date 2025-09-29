@@ -16,7 +16,7 @@ namespace Proyecto.API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Usuario>().HasIndex(u => u.Carnet).IsUnique();
+           // modelBuilder.Entity<Usuario>().HasIndex(u => u.Carnet).IsUnique();
 
         }
 

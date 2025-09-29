@@ -2,25 +2,35 @@
 <EditForm Model="Usuario" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator/>
     <div>
-        <label>Nombre:</label>
+        <label class="form-label"> Nombre:</label>
         <div>
-            <InputText @bind-Value="@Usuario.Nombre"/>
-            <ValidationMessage For="@(()=>Usuario.Nombre)"/>
+            <InputText class="form-control" @bind-Value="@Usuario.NombreCompleto" />
+            <ValidationMessage For="@(() => Usuario.NombreCompleto)" />
         </div>
-        <label>Apellidos:</label>
+        <label class="form-label">Fecha de Nacimiento:</label>
          <div>
-            <InputText @bind-Value="@Usuario.Apellidos"/>
-            <ValidationMessage For="@(()=>Usuario.Apellidos)"/>
+            <InputText class="form-control" @bind-Value="@Usuario.FechaNac" />
+            <ValidationMessage For="@(() => Usuario.FechaNac)" />
         </div>
-        <label>Carnet:</label>
+        <label class="form-label">Lugar de Nacimiento:</label>
         <div>
-            <InputText @bind-Value="@Usuario.Carnet" />
-            <ValidationMessage For="@(() => Usuario.Carnet)" />
+            <InputText class="form-control" @bind-Value="@Usuario.LugarNac" />
+            <ValidationMessage For="@(() => Usuario.LugarNac)" />
         </div>
-        <label>Correo:</label>
+        <label class="form-label">Estado Civil:</label>
         <div>
-            <InputText @bind-Value="@Usuario.Correo" />
-            <ValidationMessage For="@(() => Usuario.Correo)" />
+            <InputText class="form-control" @bind-Value="@Usuario.EstadoCivil" />
+            <ValidationMessage For="@(() => Usuario.EstadoCivil)" />
+        </div>
+        <label class ="form-label">Profesion:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Usuario.Profesion" />
+            <ValidationMessage For="@(() => Usuario.Profesion)" />
+        </div>
+        <label class="form-label">Domicilio:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Usuario.Domicilio" />
+            <ValidationMessage For="@(() => Usuario.Domicilio)" />
         </div>
     </div>
 

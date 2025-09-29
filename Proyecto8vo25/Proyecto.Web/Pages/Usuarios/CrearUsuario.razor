@@ -1,18 +1,92 @@
 ﻿@page "/usuario/crear"
 @using Proyecto.Shared.Entidad
-@using static System.Net.WebRequestMethods
 @inject NavigationManager navegar
+@inject IJSRuntime JS
 @inject HttpClient Http
 
 <h3>Crear Usuario</h3>
+
+<input type="file" id="fileInput" class="form-control" @onchange="ProcesarImagen" />
+<textarea @bind="TextoExtraido" class="form-control" rows="7" placeholder="Texto extraído..." readonly></textarea>
+
 <UsuarioForms Usuario="usuario" OnValidSubmit="Crear" ReturnAction="Return" />
+
 @code {
     private Usuario usuario = new();
+    string TextoExtraido = "";
+    string Nombre = "";
+    string FechaNac = "";
+    string LugarNac = "";
+    string Estado = "";
+    string Profesion = "";
+    string Domicilio = "";
+
+    private async Task ProcesarImagen()
+    {
+        TextoExtraido = await JS.InvokeAsync<string>("recognizeTextFromImage", "fileInput");
+        TextoExtraido = NormalizarTexto(TextoExtraido);
+
+        // Extraer datos con Regex
+        Nombre = ExtractRegex(TextoExtraido, @"TA:\s*([A-Z\s]+)");
+        FechaNac = ExtractRegex(TextoExtraido, @"NACIDO EL\s*([0-9]{1,2}\s*DE\s*[A-Z]+\s*[0-9]{4})");
+        LugarNac = ExtractRegex(TextoExtraido, @"EN   \s*([A-Z\s\-]+)");
+        Estado = ExtractRegex(TextoExtraido, @"ESTADO CIVIL\s*([A-Z]+)");
+        Profesion = ExtractRegex(TextoExtraido, @"PROFESI[ÓO]N\/OCUPACI[ÓO]N\s*([A-Z\s\.]+)");
+        Domicilio = ExtractRegex(TextoExtraido, @"DOMICILIO\s*([A-Z0-9\s\.\-]+)");
+
+        usuario.NombreCompleto = Nombre;
+        usuario.FechaNac = FechaNac;
+        usuario.LugarNac = LugarNac;
+        usuario.EstadoCivil = Estado;
+        usuario.Profesion = Profesion;
+        usuario.Domicilio = Domicilio;
+    }
+
+    private string NormalizarTexto(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text)) return "";
+        text = text.ToUpperInvariant();
+        text = text.Replace("|", " ")
+                   .Replace("<", " ")
+                   .Replace(">", " ")
+                   .Replace("\"", " ")
+                   .Replace("«", " ")
+                   .Replace("»", " ")
+                   .Replace("O ", "0 "); // corrige algunos OCR
+        text = System.Text.RegularExpressions.Regex.Replace(text, @"\s+", " ");
+        return text.Trim();
+    }
+
+    private string ExtractRegex(string text, string pattern)
+    {
+        var match = System.Text.RegularExpressions.Regex.Match(text, pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        return match.Success ? match.Groups[1].Value.Trim() : "";
+    }
 
     private async Task Crear()
     {
+        var usuario = new
+        {
+            NombreCompleto = Nombre,
+            FechaNac = FechaNac,
+            LugarNac = LugarNac,
+            EstadoCivil = Estado,
+            Profesion = Profesion,
+            Domicilio = Domicilio
+        };
+
         var resultado = await Http.PostAsJsonAsync("/api/usuarios/", usuario);
-        navegar.NavigateTo("/user");
+
+        if (resultado.IsSuccessStatusCode)
+        {
+            await JS.InvokeVoidAsync("alert", "Guardado exitosamente.");
+            TextoExtraido = Nombre = FechaNac = LugarNac = Estado = Profesion = Domicilio = "";
+            navegar.NavigateTo("/user");
+        }
+        else
+        {
+            await JS.InvokeVoidAsync("alert", "Error al guardar.");
+        }
     }
 
     private void Return()
@@ -20,3 +94,4 @@
         navegar.NavigateTo("/user");
     }
 }
+```

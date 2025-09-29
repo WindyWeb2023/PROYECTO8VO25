@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Proyecto.API.Migrations
 {
     /// <inheritdoc />
-    public partial class _1erParcial : Migration
+    public partial class Review : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,21 +33,17 @@ namespace Proyecto.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Apellidos = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Carnet = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Correo = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    NombreCompleto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FechaNac = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LugarNac = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EstadoCivil = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Profesion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Domicilio = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.Id);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Usuarios_Carnet",
-                table: "Usuarios",
-                column: "Carnet",
-                unique: true);
         }
 
         /// <inheritdoc />

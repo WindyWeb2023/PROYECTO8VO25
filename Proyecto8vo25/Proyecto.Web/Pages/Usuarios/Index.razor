@@ -20,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var u in usuarios)
+             @foreach (var u in usuarios)
             {
                 <tr>
                     <td>
@@ -28,19 +28,25 @@
                         <button class="btn btn-danger" onclick=@(() => Delete(u))>Borrar</button>
                     </td>
                     <td>
-                         @u.Nombre
+                         @u.NombreCompleto
                     </td>
                     <td>
-                        @u.Apellidos
+                        @u.FechaNac
                     </td>
                     <td>
-                        @u.Carnet
+                        @u.LugarNac
                     </td>
                     <td>
-                        @u.Correo
+                        @u.Profesion
+                    </td>
+                    <td>
+                        @u.EstadoCivil
+                    </td>
+                    <td>
+                        @u.Domicilio
                     </td>
                 </tr>
-            }
+            } 
         </tbody>
     </table>
 </body>
